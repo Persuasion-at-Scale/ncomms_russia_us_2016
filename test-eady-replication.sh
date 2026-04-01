@@ -4,10 +4,13 @@
 # Real survey data stays untouched; only missing intermediates are generated
 
 set -e
-WORKDIR=$(mktemp -d)
-echo "==> Working in $WORKDIR"
+WORKDIR="$(pwd)/ncomms_russia_us_2016"
 
-cd "$WORKDIR"
+if [ -d "$WORKDIR" ]; then
+  echo "==> $WORKDIR already exists; removing"
+  rm -rf "$WORKDIR"
+fi
+
 git clone https://github.com/Persuasion-at-Scale/ncomms_russia_us_2016.git
 cd ncomms_russia_us_2016
 
@@ -30,4 +33,4 @@ echo "==> Real data untouched:"
 ls -la data/Survey_Data.rds
 
 echo ""
-echo "==> Done. Everything in: $WORKDIR/ncomms_russia_us_2016"
+echo "==> Done. Everything in: $WORKDIR"
