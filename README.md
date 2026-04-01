@@ -28,12 +28,44 @@ This repository is organized as follows:
 
 * [supplementary](https://github.com/tpaskhalis/ncomms_russia_us_2016/tree/main/supplementary) (`./supplementary/`) includes the code and compiled versions of supplementary information.
 
+## Quick Start with Synthetic Data
+
+The underlying Twitter data cannot be shared due to data license and privacy constraints (see [Data Availability](#data-availability) below). However, you can run the full pipeline using synthetic data that matches the aggregate statistical properties of the real dataset:
+
+```bash
+# Clone and enter the repo
+git clone https://github.com/Persuasion-at-Scale/ncomms_russia_us_2016.git
+cd ncomms_russia_us_2016
+
+# Run the full pipeline (generates synthetic data, fits models, produces figures)
+make
+```
+
+This will:
+1. Generate synthetic `Survey_Data.rds` (3,500 rows x 190 columns matching real marginal distributions and correlations)
+2. Run the regression analysis (scripts 05-07)
+3. Produce all 6 publication figures in `figures/`
+
+If you have access to the real data, place `Survey_Data.rds` in `data/` and `make` will use it instead.
+
+### Data Availability
+
+The synthetic data generator (`code/00_generate_synthetic_data.R`) creates data from aggregate statistics only (means, variances, correlations). No individual-level information is stored or recoverable. Scripts 01-03 are stubs; they document what the original data pipeline did but require private Twitter data to run.
+
 ## Logs
 
 Log files are produced by running `R CMD BATCH` on scripts located in `code` folder from the root of the project directory. E.g.:
 
     R CMD BATCH code/05_regression_analysis.R logs/05_regression_analysis.Rlog
     R CMD BATCH code/30_write_up_results.R logs/30_write_up_results.Rlog
+
+Or use the Makefile:
+
+    make          # Full pipeline: data -> results -> figures
+    make data     # Generate synthetic data only
+    make results  # Run analysis scripts (05-07)
+    make figures  # Generate publication figures
+    make clean    # Remove all generated outputs
 
 ## Citation
 
